@@ -6,5 +6,6 @@ export const firebaseCollections = {
   bookings: "bookings",
   students: "students",
   tutors: "tutors",
+  usersProfiles: "usersProfiles",
   reviews: "reviews",
 };

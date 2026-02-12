@@ -17,7 +17,6 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         setUsers: (state, action: PayloadAction<User[]>) => {
-            console.log("Users set:", action.payload);
             state.users = action.payload;
             state.loading = false;
         },

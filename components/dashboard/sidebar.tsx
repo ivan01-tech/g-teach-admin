@@ -6,14 +6,12 @@ import { cn } from "@/lib/utils";
 import {
   BookOpen,
   LayoutDashboard,
-  Search,
   MessageSquare,
   Calendar,
   User,
   Users,
   Settings,
   LogOut,
-  ShieldCheck,
   Heart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,7 +21,8 @@ import { UserRole } from "@/lib/roles";
 const adminNavItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/users", label: "Users", icon: Users },
-  { href: "/dashboard/favorites", label: "Favorites", icon: Heart },
+  { href: "/dashboard/profiles", label: "Profiles", icon: Users },
+  // { href: "/dashboard/favorites", label: "Favorites", icon: Heart },
   { href: "/dashboard/bookings", label: "Bookings", icon: Calendar },
   { href: "/dashboard/messages", label: "Messages", icon: MessageSquare },
   { href: "/dashboard/profile", label: "Profile", icon: User },

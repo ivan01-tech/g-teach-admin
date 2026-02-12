@@ -13,7 +13,6 @@ export const initUsersListener = createAsyncThunk(
         return new Promise<(unsub: () => void) => void>((resolve) => {
             let isFirstSnapshot = true;
             const unsubscribe = userService.listenUsers((users) => {
-                console.log("Users listener triggered:", users);
                 dispatch(setUsers(users));
 
                 if (isFirstSnapshot) {

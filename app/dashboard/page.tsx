@@ -3,16 +3,27 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Calendar, MessageSquare, Search, Clock, Star, BookOpen, TrendingUp, Award } from "lucide-react"
+import { Calendar, MessageSquare, Search, Clock, Star, BookOpen, TrendingUp, Award, Users, CheckSquare, BarChart2 } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 import { Suspense } from "react"
 import Loading from "./loading"
 import { useAuth } from "@/hooks/use-auth"
+import { useAppSelector } from "@/lib/hooks"
 
 export default function DashboardPage() {
   const { user } = useAuth()
 
-  const isStudent = user?.role != "student"
+  const role = user?.role
+  const isStudent = role === "student"
+  const isAdmin = role === "admin"
+  const isTutor = role === "tutor"
+
+  const usersState = useAppSelector((s) => s.users)
+  const profilesState = useAppSelector((s) => s.profiles)
+
+  const totalUsers = usersState?.users?.length || 0
+  const totalTutors = profilesState?.profiles?.length || 0
+  const pendingVerifications = profilesState?.profiles?.filter((p) => p.verificationStatus === "pending").length || 0
 
   return (
     <Suspense fallback={<Loading />}>
@@ -31,7 +42,53 @@ export default function DashboardPage() {
 
         {/* Quick Actions */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {isStudent ? (
+          {isAdmin ? (
+            <>
+              <Card className="transition-shadow hover:shadow-md">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+                  <Users className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold">{totalUsers}</p>
+                  <p className="text-xs text-muted-foreground">All registered users</p>
+                </CardContent>
+              </Card>
+
+              <Card className="transition-shadow hover:shadow-md">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium">Total Tutors</CardTitle>
+                  <BookOpen className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold">{totalTutors}</p>
+                  <p className="text-xs text-muted-foreground">Active tutor profiles</p>
+                </CardContent>
+              </Card>
+
+              <Card className="transition-shadow hover:shadow-md">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium">Pending Verifications</CardTitle>
+                  <CheckSquare className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold">{pendingVerifications}</p>
+                  <p className="text-xs text-muted-foreground">Profiles awaiting review</p>
+                </CardContent>
+              </Card>
+
+              <Card className="transition-shadow hover:shadow-md">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium">Platform Activity</CardTitle>
+                  <BarChart2 className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold">—</p>
+                  <p className="text-xs text-muted-foreground">Recent key metrics</p>
+                </CardContent>
+              </Card>
+            </>
+          ) : isStudent ? (
             <>
               <Card className="transition-shadow hover:shadow-md">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
