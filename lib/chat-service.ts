@@ -31,11 +31,11 @@ export async function getConversations(userId: string): Promise<ConversationWith
   )
 
   const snapshot = await getDocs(q)
-  
+
   return snapshot.docs.map((doc) => {
     const data = doc.data()
     const otherParticipantId = data.participants.find((p: string) => p !== userId)
-    
+
     return {
       id: doc.id,
       participants: data.participants,
@@ -110,6 +110,30 @@ export const chatService = {
       where("participants", "array-contains", userId),
       orderBy("lastMessageAt", "desc")
     )
+
+    return onSnapshot(q, (snapshot) => {
+      const conversations: Conversation[] = snapshot.docs.map((doc) => {
+        const data = doc.data()
+        return {
+          id: doc.id,
+          participants: data.participants,
+          participantNames: data.participantNames,
+          participantPhotos: data.participantPhotos,
+          lastMessage: data.lastMessage,
+          lastMessageAt: data.lastMessageAt?.toDate(),
+          unreadCount: data.unreadCount,
+        }
+      })
+      callback(conversations)
+    })
+  },
+
+  // Subscribe to ALL conversations (for Admins)
+  subscribeToAllConversations(
+    callback: (conversations: Conversation[]) => void
+  ): () => void {
+    const conversationsRef = collection(db, "conversations")
+    const q = query(conversationsRef, orderBy("lastMessageAt", "desc"))
 
     return onSnapshot(q, (snapshot) => {
       const conversations: Conversation[] = snapshot.docs.map((doc) => {

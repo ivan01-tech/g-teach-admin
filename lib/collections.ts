@@ -8,4 +8,7 @@ export const firebaseCollections = {
   tutors: "tutors",
   usersProfiles: "usersProfiles",
   reviews: "reviews",
+  matchings: "matchings",
+  engagedUsers: "engagedUsers",
+  stats: "stats",
 };

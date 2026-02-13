@@ -4,6 +4,9 @@ import { setupEmailSideEffects } from "./middleware/email-side-effects";
 import authReducer from "@/app/auth/auth-slice";
 import userReducer from "@/app/dashboard/users/redux/user-slice";
 import profilesReducer from "@/app/dashboard/profiles/profiles-slices";
+import matchingsReducer from "@/app/dashboard/matchings/redux/matching-slice";
+import statsReducer from "@/app/dashboard/stats/redux/stats-slice";
+
 
 // Initialize side effects
 
@@ -12,6 +15,8 @@ export const store = configureStore({
     auth: authReducer,
     users: userReducer,
     profiles: profilesReducer,
+    matchings: matchingsReducer,
+    stats: statsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

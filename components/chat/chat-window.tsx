@@ -24,6 +24,7 @@ interface ChatWindowProps {
   otherParticipant: { id: string; name: string; photo: string }
   onSendMessage: (text: string) => void
   onBack: () => void
+  isAdmin?: boolean
 }
 
 export function ChatWindow({
@@ -33,6 +34,7 @@ export function ChatWindow({
   otherParticipant,
   onSendMessage,
   onBack,
+  isAdmin,
 }: ChatWindowProps) {
   const [inputValue, setInputValue] = useState("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -209,20 +211,22 @@ export function ChatWindow({
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSubmit} className="border-t border-border p-4">
-        <div className="flex gap-2">
-          <Input
-            ref={inputRef}
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Type a message..."
-            className="flex-1"
-          />
-          <Button type="submit" size="icon" disabled={!inputValue.trim()}>
-            <Send className="h-4 w-4" />
-          </Button>
-        </div>
-      </form>
+      {!isAdmin && (
+        <form onSubmit={handleSubmit} className="border-t border-border p-4">
+          <div className="flex gap-2">
+            <Input
+              ref={inputRef}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Type a message..."
+              className="flex-1"
+            />
+            <Button type="submit" size="icon" disabled={!inputValue.trim()}>
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+        </form>
+      )}
     </div>
   )
 }

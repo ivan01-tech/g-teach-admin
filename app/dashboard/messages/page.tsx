@@ -19,6 +19,7 @@ function MessagesContent() {
   const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(true)
   const [mobileShowChat, setMobileShowChat] = useState(false)
+  const isAdmin = user?.role === "admin"
 
   // Initialize with tutor param if present
   const tutorId = searchParams.get("tutor")
@@ -27,7 +28,11 @@ function MessagesContent() {
     if (!user) return
 
     // Subscribe to conversations
-    const unsubscribe = chatService.subscribeToConversations(user.uid, (convs) => {
+    const subFn = isAdmin
+      ? chatService.subscribeToAllConversations
+      : (cb: any) => chatService.subscribeToConversations(user.uid, cb);
+
+    const unsubscribe = subFn((convs: Conversation[]) => {
       setConversations(convs)
       setLoading(false)
 
@@ -44,7 +49,7 @@ function MessagesContent() {
     })
 
     return () => unsubscribe()
-  }, [user, tutorId, selectedConversation])
+  }, [user, tutorId, selectedConversation, isAdmin])
 
   useEffect(() => {
     if (!selectedConversation) {
@@ -57,13 +62,13 @@ function MessagesContent() {
       setMessages(msgs)
     })
 
-    // Mark as read
-    if (user) {
+    // Mark as read (skip for admins)
+    if (user && !isAdmin) {
       chatService.markAsRead(selectedConversation.id, user.uid)
     }
 
     return () => unsubscribe()
-  }, [selectedConversation, user])
+  }, [selectedConversation, user, isAdmin])
 
   const handleSelectConversation = (conversation: Conversation) => {
     setSelectedConversation(conversation)
@@ -71,11 +76,12 @@ function MessagesContent() {
   }
 
   const handleBackToList = () => {
+    setSelectedConversation(null)
     setMobileShowChat(false)
   }
 
   const handleSendMessage = async (text: string) => {
-    if (!selectedConversation || !user || !userProfile) return
+    if (!selectedConversation || !user || !userProfile || isAdmin) return
 
     await chatService.sendMessage(
       selectedConversation.id,
@@ -87,11 +93,15 @@ function MessagesContent() {
   }
 
   const getOtherParticipant = (conversation: Conversation) => {
-    if (!user) return { name: "", photo: "" }
-    const otherId = conversation.participants.find((p) => p !== user.uid) || ""
+    if (!user) return { id: "", name: "", photo: "" }
+
+    // For admin, we might want to show the first participant as the "main" one or slightly different UI
+    // For now, let's just pick the first one that isn't the current user if possible
+    const otherId = conversation.participants.find((p) => p !== user.uid) || conversation.participants[0] || ""
+
     return {
       id: otherId,
-      name: conversation.participantNames[otherId] || "Unknown",
+      name: conversation.participantNames[otherId] || "Conversation",
       photo: conversation.participantPhotos[otherId] || "",
     }
   }
@@ -108,30 +118,30 @@ function MessagesContent() {
     <div className="flex h-[calc(100vh-8rem)] overflow-hidden rounded-xl border border-border bg-card">
       {/* Conversation List - Hidden on mobile when chat is open */}
       <div
-        className={`w-full border-r border-border md:w-80 md:block ${
-          mobileShowChat ? "hidden" : "block"
-        }`}
+        className={`w-full border-r border-border md:w-80 md:block ${mobileShowChat ? "hidden" : "block"
+          }`}
       >
         <ConversationList
           conversations={conversations}
           selectedId={selectedConversation?.id}
           currentUserId={user?.uid || ""}
           onSelect={handleSelectConversation}
+          isAdmin={isAdmin}
         />
       </div>
 
       {/* Chat Window - Hidden on mobile when list is shown */}
       <div className={`flex-1 ${mobileShowChat ? "block" : "hidden md:block"}`}>
         {selectedConversation ? (
-          // <ChatWindow
-          //   conversation={selectedConversation}
-          //   messages={messages}
-          //   currentUserId={user?.uid || ""}
-          //   otherParticipant={getOtherParticipant(selectedConversation)}
-          //   onSendMessage={handleSendMessage}
-          //   onBack={handleBackToList}
-          // />
-          <div></div>
+          <ChatWindow
+            conversation={selectedConversation}
+            messages={messages}
+            currentUserId={user?.uid || ""}
+            otherParticipant={getOtherParticipant(selectedConversation)}
+            onSendMessage={handleSendMessage}
+            onBack={handleBackToList}
+            isAdmin={isAdmin}
+          />
         ) : (
           <EmptyChat />
         )}

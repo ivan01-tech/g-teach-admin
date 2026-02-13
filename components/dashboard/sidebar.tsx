@@ -22,6 +22,7 @@ const adminNavItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/users", label: "Users", icon: Users },
   { href: "/dashboard/profiles", label: "Profiles", icon: Users },
+  { href: "/dashboard/matchings", label: "Matchings", icon: Users },
   // { href: "/dashboard/favorites", label: "Favorites", icon: Heart },
   { href: "/dashboard/bookings", label: "Bookings", icon: Calendar },
   { href: "/dashboard/messages", label: "Messages", icon: MessageSquare },

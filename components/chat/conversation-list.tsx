@@ -12,6 +12,7 @@ interface ConversationListProps {
   selectedId?: string
   currentUserId: string
   onSelect: (conversation: Conversation) => void
+  isAdmin?: boolean
 }
 
 export function ConversationList({
@@ -19,10 +20,16 @@ export function ConversationList({
   selectedId,
   currentUserId,
   onSelect,
+  isAdmin,
 }: ConversationListProps) {
   const [searchQuery, setSearchQuery] = useState("")
 
   const filteredConversations = conversations.filter((conv) => {
+    if (isAdmin) {
+      return Object.values(conv.participantNames).some(name =>
+        name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    }
     const otherId = conv.participants.find((p) => p !== currentUserId) || ""
     const otherName = conv.participantNames[otherId] || ""
     return otherName.toLowerCase().includes(searchQuery.toLowerCase())
@@ -81,10 +88,12 @@ export function ConversationList({
         ) : (
           <div className="divide-y divide-border">
             {filteredConversations.map((conversation) => {
-              const otherId = conversation.participants.find((p) => p !== currentUserId) || ""
-              const otherName = conversation.participantNames[otherId] || "Unknown"
+              const otherId = conversation.participants.find((p) => p !== currentUserId) || conversation.participants[0] || ""
+              const otherName = isAdmin
+                ? Object.values(conversation.participantNames).join(" & ")
+                : (conversation.participantNames[otherId] || "Unknown")
               const otherPhoto = conversation.participantPhotos[otherId] || ""
-              const unreadCount = conversation.unreadCount[currentUserId] || 0
+              const unreadCount = isAdmin ? 0 : (conversation.unreadCount[currentUserId] || 0)
 
               return (
                 <button

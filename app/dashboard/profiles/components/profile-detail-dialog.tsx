@@ -35,8 +35,8 @@ export function ProfileDetailDialog({ tutor, isOpen, onOpenChange }: ProfileDeta
     if (!tutor) return null;
 
     return (
-        <Dialog open={isOpen} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-3xl max-h-[90vh] p-0 overflow-hidden bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800">
+        <Dialog open={isOpen} onOpenChange={onOpenChange} >
+            <DialogContent className=" min-w-[70vw] max-w-250  max-h-[90vh] p-0 overflow-hidden bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800">
                 <DialogHeader className="p-6 pb-0">
                     <div className="flex items-start gap-6">
                         <Avatar className="h-20 w-20 border-2 border-slate-100 dark:border-slate-800">

@@ -17,6 +17,7 @@ export interface Tutor {
   email: string
   photoURL?: string
   bio?: string
+  city?: string
   specializations: string[]
   teachingLevels: string[]
   examTypes: string[]
@@ -37,6 +38,12 @@ export interface Tutor {
   timezone?: string
   // Kept for backwards compatibility
   isVerified?: boolean
+}
+
+export interface City {
+  id: string
+  name: string
+  country?: string
 }
 
 export interface AvailabilitySlot {
@@ -128,6 +135,61 @@ export type User = {
   displayName: string
   email: string
   photoURL: string | null
-  role: UserRole
+  role?: UserRole  // Optional - fetched from Firestore on auth state change
+  favorites?: string[]
   createdAt: number
+}
+
+export type MatchingStatus = "requested" | "open" | "confirmed" | "refused" | "continued"
+
+export interface Matching {
+  id: string
+  learnerId: string
+  tutorId: string
+  learnerName?: string
+  tutorName?: string
+  contactDate: any // Timestamp
+  status: MatchingStatus
+  // Confirmations mutuelles
+  learnerConfirmed?: boolean
+  learnerConfirmedAt?: any // Timestamp
+  tutorConfirmed?: boolean
+  tutorConfirmedAt?: any // Timestamp
+  // Feedback & Raisons
+  learnerFeedback?: string
+  tutorFeedback?: string
+  // Gestion des rappels
+  reminderSentAt?: any // Timestamp
+  followupAt?: any // Timestamp pour relance courte (e.g. 5 minutes)
+  reminderCount?: number // Nombre de rappels envoyés
+  acceptedAt?: any // Timestamp
+  closedAt?: any // Timestamp
+  // Monétisation
+  isMonetized?: boolean // Est-ce une collaboration payante
+  transactionId?: string // Référence à une transaction
+}
+
+export interface EngagedUser {
+  id: string
+  userId: string
+  displayName: string
+  email: string
+  photoURL?: string
+  role: UserRole
+  lastActive: any // Timestamp
+  matchCount: number
+  messageCount: number
+  status: "active" | "inactive"
+}
+
+export interface PlatformStats {
+  id: string
+  totalUsers: number
+  totalTutors: number
+  totalStudents: number
+  totalMatchings: number
+  totalMessages: number
+  activeUsers24h: number
+  conversionRate: number
+  updatedAt: any // Timestamp
 }
