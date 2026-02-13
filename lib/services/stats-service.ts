@@ -8,6 +8,7 @@ import {
 import { db } from "@/lib/firebase";
 import { firebaseCollections } from "@/lib/collections";
 import { EngagedUser, PlatformStats } from "@/lib/types";
+import { toSerializable } from "../utils";
 
 export const statsService = {
     listenEngagedUsers: (onUpdate: (users: EngagedUser[]) => void) => {
@@ -15,7 +16,7 @@ export const statsService = {
         const q = query(engagedRef);
 
         return onSnapshot(q, (snapshot) => {
-            const users = snapshot.docs.map((doc) => ({
+            const users = snapshot.docs.map((doc) => toSerializable({
                 id: doc.id,
                 ...doc.data(),
             })) as EngagedUser[];
@@ -30,7 +31,7 @@ export const statsService = {
 
         return onSnapshot(q, (snapshot) => {
             if (!snapshot.empty) {
-                onUpdate({ id: snapshot.docs[0].id, ...snapshot.docs[0].data() } as PlatformStats);
+                onUpdate(toSerializable({ id: snapshot.docs[0].id, ...snapshot.docs[0].data() }) as PlatformStats);
             } else {
                 onUpdate(null);
             }

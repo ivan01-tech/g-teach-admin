@@ -8,8 +8,10 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetDescription,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { VisuallyHidden } from "@/components/ui/visually-hidden"
 import { BetreuerSidebar } from "./sidebar"
 
 export function BetreuerMobileSidebar() {
@@ -29,9 +31,12 @@ export function BetreuerMobileSidebar() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="w-64 p-0">
-          <SheetHeader className="sr-only">
-            <SheetTitle>Navigation Menu</SheetTitle>
-          </SheetHeader>
+          <VisuallyHidden>
+            <SheetHeader>
+              <SheetTitle>Menu de Navigation</SheetTitle>
+              <SheetDescription>Menu pour naviguer dans l'espace accompagnateur</SheetDescription>
+            </SheetHeader>
+          </VisuallyHidden>
           <BetreuerSidebar
             className="h-full border-0"
             onNavigate={() => setOpen(false)}

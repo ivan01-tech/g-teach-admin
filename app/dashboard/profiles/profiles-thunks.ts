@@ -5,6 +5,7 @@ import { collection, onSnapshot, doc, updateDoc, deleteDoc, serverTimestamp } fr
 import { toast } from "sonner";
 import { Tutor, VerificationStatus } from "@/lib/types";
 import { setProfiles } from "./profiles-slices";
+import { toSerializable } from "@/lib/utils";
 
 export const listenToProfiles = createAsyncThunk(
     "profiles/listen",
@@ -13,7 +14,7 @@ export const listenToProfiles = createAsyncThunk(
             const unsubscribe = onSnapshot(
                 collection(db, firebaseCollections.tutors),
                 (querySnapshot) => {
-                    const tutors: Tutor[] = querySnapshot.docs.map((doc) => ({
+                    const tutors: Tutor[] = querySnapshot.docs.map((doc) => toSerializable({
                         ...(doc.data() as Tutor),
                         uid: doc.id,
                     }));
@@ -26,6 +27,8 @@ export const listenToProfiles = createAsyncThunk(
                 },
             );
 
+            // We return a function to the caller through resolve/reject in a manual Promise if we want it serializable-safe
+            // But since the user's Bootstrap.tsx needs this, we'll keep it but ignore the action in store.ts
             return unsubscribe;
         } catch (error: any) {
             toast.error(error?.message || "Erreur lors de l'écoute des profils");

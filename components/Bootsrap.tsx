@@ -11,24 +11,24 @@ export default function Bootstrap() {
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
-        let unsubscribe: (() => void) | undefined;
+        const unsubscribes: (() => void)[] = [];
 
         const init = async () => {
             const resultAction = await dispatch(initUsersListener());
             if (initUsersListener.fulfilled.match(resultAction)) {
-                unsubscribe = resultAction.payload as unknown as () => void;
+                unsubscribes.push(resultAction.payload as unknown as () => void);
             }
 
             const resultAction2 = await dispatch(listenToProfiles());
             if (listenToProfiles.fulfilled.match(resultAction2)) {
-                unsubscribe = resultAction2.payload as unknown as () => void;
+                unsubscribes.push(resultAction2.payload as unknown as () => void);
             }
         };
 
         init();
 
         return () => {
-            if (unsubscribe) unsubscribe();
+            unsubscribes.forEach(unsub => unsub());
         };
     }, [dispatch])
 

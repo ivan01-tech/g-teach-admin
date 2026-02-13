@@ -16,6 +16,7 @@ import {
 } from "firebase/firestore"
 import { db } from "./firebase"
 import type { Conversation, Message } from "./types"
+import { toSerializable } from "./utils"
 
 export interface ConversationWithDetails extends Conversation {
   otherParticipantName?: string
@@ -36,17 +37,17 @@ export async function getConversations(userId: string): Promise<ConversationWith
     const data = doc.data()
     const otherParticipantId = data.participants.find((p: string) => p !== userId)
 
-    return {
+    return toSerializable({
       id: doc.id,
       participants: data.participants,
       participantNames: data.participantNames,
       participantPhotos: data.participantPhotos,
       lastMessage: data.lastMessage,
-      lastMessageAt: data.lastMessageAt?.toDate(),
+      lastMessageAt: data.lastMessageAt,
       unreadCount: data.unreadCount,
       otherParticipantName: otherParticipantId ? data.participantNames[otherParticipantId] : undefined,
       otherParticipantPhoto: otherParticipantId ? data.participantPhotos[otherParticipantId] : undefined,
-    }
+    }) as ConversationWithDetails
   })
 }
 
@@ -114,15 +115,15 @@ export const chatService = {
     return onSnapshot(q, (snapshot) => {
       const conversations: Conversation[] = snapshot.docs.map((doc) => {
         const data = doc.data()
-        return {
+        return toSerializable({
           id: doc.id,
           participants: data.participants,
           participantNames: data.participantNames,
           participantPhotos: data.participantPhotos,
           lastMessage: data.lastMessage,
-          lastMessageAt: data.lastMessageAt?.toDate(),
+          lastMessageAt: data.lastMessageAt,
           unreadCount: data.unreadCount,
-        }
+        })
       })
       callback(conversations)
     })
@@ -138,15 +139,15 @@ export const chatService = {
     return onSnapshot(q, (snapshot) => {
       const conversations: Conversation[] = snapshot.docs.map((doc) => {
         const data = doc.data()
-        return {
+        return toSerializable({
           id: doc.id,
           participants: data.participants,
           participantNames: data.participantNames,
           participantPhotos: data.participantPhotos,
           lastMessage: data.lastMessage,
-          lastMessageAt: data.lastMessageAt?.toDate(),
+          lastMessageAt: data.lastMessageAt,
           unreadCount: data.unreadCount,
-        }
+        })
       })
       callback(conversations)
     })
@@ -163,16 +164,16 @@ export const chatService = {
     return onSnapshot(q, (snapshot) => {
       const messages: Message[] = snapshot.docs.map((doc) => {
         const data = doc.data()
-        return {
+        return toSerializable({
           id: doc.id,
           conversationId,
           senderId: data.senderId,
           senderName: data.senderName,
           senderPhoto: data.senderPhoto,
           text: data.text,
-          createdAt: data.createdAt?.toDate() || new Date(),
+          createdAt: data.createdAt,
           read: data.read,
-        }
+        })
       })
       callback(messages)
     })
@@ -233,14 +234,14 @@ export const chatService = {
     }
 
     const data = snapshot.data()
-    return {
+    return toSerializable({
       id: snapshot.id,
       participants: data.participants,
       participantNames: data.participantNames,
       participantPhotos: data.participantPhotos,
       lastMessage: data.lastMessage,
-      lastMessageAt: data.lastMessageAt?.toDate(),
+      lastMessageAt: data.lastMessageAt,
       unreadCount: data.unreadCount,
-    }
+    })
   },
 }

@@ -7,8 +7,9 @@ import {
     serverTimestamp,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { firebaseCollections } from "@/lib/collections";
 import { Matching } from "@/lib/types";
+import { firebaseCollections } from "@/lib/collections";
+import { toSerializable } from "../utils";
 
 export const matchingService = {
     listenMatchings: (onUpdate: (matchings: Matching[]) => void) => {
@@ -16,7 +17,7 @@ export const matchingService = {
         const q = query(matchingsRef);
 
         return onSnapshot(q, (snapshot) => {
-            const matchings = snapshot.docs.map((doc) => ({
+            const matchings = snapshot.docs.map((doc) => toSerializable({
                 id: doc.id,
                 ...doc.data(),
             })) as Matching[];

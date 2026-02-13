@@ -11,7 +11,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import { VisuallyHidden } from "@/components/ui/visually-hidden";
 import {
   BookOpen,
   Menu,
@@ -42,6 +43,12 @@ export function DashboardHeader() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="w-64 p-0">
+          <VisuallyHidden>
+            <SheetHeader>
+              <SheetTitle>Menu de Navigation</SheetTitle>
+              <SheetDescription>Accéder aux sections du tableau de bord</SheetDescription>
+            </SheetHeader>
+          </VisuallyHidden>
           <MobileSidebar onClose={() => setMobileMenuOpen(false)} />
         </SheetContent>
       </Sheet>

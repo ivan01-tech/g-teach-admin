@@ -12,7 +12,7 @@ import {
   Users,
   Settings,
   LogOut,
-  Heart,
+  BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
@@ -23,6 +23,7 @@ const adminNavItems = [
   { href: "/dashboard/users", label: "Users", icon: Users },
   { href: "/dashboard/profiles", label: "Profiles", icon: Users },
   { href: "/dashboard/matchings", label: "Matchings", icon: Users },
+  { href: "/dashboard/stats", label: "Analytics", icon: BarChart3 },
   // { href: "/dashboard/favorites", label: "Favorites", icon: Heart },
   { href: "/dashboard/bookings", label: "Bookings", icon: Calendar },
   { href: "/dashboard/messages", label: "Messages", icon: MessageSquare },

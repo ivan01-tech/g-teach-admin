@@ -11,6 +11,7 @@ import {
     onSnapshot,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { toSerializable } from "../utils";
 import { User, Tutor, VerificationStatus } from "@/lib/types";
 import { firebaseCollections } from "../collections";
 
@@ -23,10 +24,10 @@ export const userService = {
         const q = query(usersRef, orderBy("createdAt", "desc"));
         const querySnapshot = await getDocs(q);
 
-        return querySnapshot.docs.map(doc => ({
+        return querySnapshot.docs.map(doc => toSerializable({
             ...doc.data(),
             uid: doc.id,
-        } as User));
+        }) as User);
     },
 
     /**
@@ -37,10 +38,10 @@ export const userService = {
         const q = query(usersRef, orderBy("createdAt", "desc"));
 
         return onSnapshot(q, (snapshot) => {
-            const users = snapshot.docs.map(doc => ({
+            const users = snapshot.docs.map(doc => toSerializable({
                 ...doc.data(),
                 uid: doc.id,
-            } as User));
+            }) as User);
             callback(users);
         });
     },

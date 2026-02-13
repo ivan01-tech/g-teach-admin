@@ -19,6 +19,7 @@ import {
 import { db, storage } from "@/lib/firebase"
 import type { Tutor, TutorDocument, VerificationStatus } from "@/lib/types"
 import { firebaseCollections } from "./collections"
+import { toSerializable } from "./utils"
 
 export async function createTutorProfile(
   uid: string,
@@ -62,7 +63,7 @@ export async function getTutorProfile(uid: string): Promise<Tutor | null> {
   const tutorSnap = await getDoc(tutorRef)
 
   if (tutorSnap.exists()) {
-    return tutorSnap.data() as Tutor
+    return toSerializable(tutorSnap.data()) as Tutor
   }
   return null
 }
@@ -104,7 +105,7 @@ export async function uploadTutorDocument(
     documents: arrayUnion(document),
   })
 
-  return document
+  return toSerializable(document)
 }
 
 export async function deleteTutorDocument(
@@ -146,7 +147,7 @@ export async function getTutors(): Promise<Tutor[]> {
   const q = query(tutorsRef)
   const querySnapshot = await getDocs(q)
 
-  return querySnapshot.docs.map((doc) => doc.data() as Tutor)
+  return querySnapshot.docs.map((doc) => toSerializable(doc.data()) as Tutor)
 }
 
 export async function getTutorsByStatus(
@@ -156,7 +157,7 @@ export async function getTutorsByStatus(
   const q = query(tutorsRef, where("verificationStatus", "==", status))
   const querySnapshot = await getDocs(q)
 
-  return querySnapshot.docs.map((doc) => doc.data() as Tutor)
+  return querySnapshot.docs.map((doc) => toSerializable(doc.data()) as Tutor)
 }
 
 export async function getStudentRequests(tutorId: string) {
