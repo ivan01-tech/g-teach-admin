@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Search } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { cn, formatTime } from "@/lib/utils"
 import type { Conversation } from "@/lib/types"
 import { useState } from "react"
 
@@ -35,22 +35,6 @@ export function ConversationList({
     return otherName.toLowerCase().includes(searchQuery.toLowerCase())
   })
 
-  const formatTime = (date?: Date) => {
-    if (!date) return ""
-    const now = new Date()
-    const diff = now.getTime() - date.getTime()
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-
-    if (days === 0) {
-      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-    } else if (days === 1) {
-      return "Yesterday"
-    } else if (days < 7) {
-      return date.toLocaleDateString([], { weekday: "short" })
-    } else {
-      return date.toLocaleDateString([], { month: "short", day: "numeric" })
-    }
-  }
 
   return (
     <div className="flex h-full flex-col">
