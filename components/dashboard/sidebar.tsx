@@ -24,12 +24,10 @@ const adminNavItems = [
   { href: "/dashboard/profiles", label: "Profiles", icon: Users },
   { href: "/dashboard/matchings", label: "Matchings", icon: Users },
   { href: "/dashboard/stats", label: "Analytics", icon: BarChart3 },
-  // { href: "/dashboard/favorites", label: "Favorites", icon: Heart },
-  { href: "/dashboard/bookings", label: "Bookings", icon: Calendar },
   { href: "/dashboard/messages", label: "Messages", icon: MessageSquare },
   { href: "/dashboard/profile", label: "Profile", icon: User },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
-  { href: "/dashboard/availability", label: "Availability", icon: Calendar },
+  { href: "/dashboard/contact-inquiries", label: "Contact Inquiries", icon: MessageSquare },
 ];
 
 export function DashboardSidebar() {

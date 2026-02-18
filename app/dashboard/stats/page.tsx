@@ -5,9 +5,11 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { initStatsListeners } from "./redux/stats-thunks";
 import { PlatformStatsView } from "./components/platform-stats-view";
 import { EngagedUsersList } from "./components/engaged-users-list";
+import { ProfileViewsStats } from "./components/profile-views-stats";
+import { ProfileViewsByTutor } from "./components/profile-views-by-tutor";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, BarChart3, Users } from "lucide-react";
+import { Loader2, BarChart3, Users, Eye } from "lucide-react";
 
 export default function StatsPage() {
     const dispatch = useAppDispatch();
@@ -54,6 +56,10 @@ export default function StatsPage() {
                         <Users className="h-4 w-4" />
                         Engagement Utilisateurs
                     </TabsTrigger>
+                    <TabsTrigger value="profile-views" className="flex items-center gap-2">
+                        <Eye className="h-4 w-4" />
+                        Vues Profil
+                    </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="platform" className="space-y-6">
@@ -72,6 +78,13 @@ export default function StatsPage() {
                             <EngagedUsersList users={engagedUsers} />
                         </CardContent>
                     </Card>
+                </TabsContent>
+
+                <TabsContent value="profile-views" className="space-y-6">
+                    <div className="grid gap-4">
+                        <ProfileViewsStats />
+                    </div>
+                    <ProfileViewsByTutor />
                 </TabsContent>
             </Tabs>
         </div>

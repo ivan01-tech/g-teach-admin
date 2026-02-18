@@ -52,7 +52,7 @@ export function EngagedUsersList({ users }: EngagedUsersListProps) {
                                     <div className="flex items-center gap-3">
                                         <Avatar className="h-8 w-8">
                                             <AvatarImage src={user.photoURL || "/placeholder.svg"} alt={user.displayName} />
-                                            <AvatarFallback>{user.displayName[0]?.toUpperCase()}</AvatarFallback>
+                                            <AvatarFallback>{user?.displayName && user?.displayName[0]?.toUpperCase()}</AvatarFallback>
                                         </Avatar>
                                         <div className="flex flex-col">
                                             <span className="font-medium">{user.displayName}</span>
