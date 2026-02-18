@@ -10,7 +10,8 @@ import {
     Activity,
     Zap,
     TrendingUp,
-    BarChart3
+    BarChart3,
+    Eye
 } from "lucide-react";
 
 interface PlatformStatsViewProps {

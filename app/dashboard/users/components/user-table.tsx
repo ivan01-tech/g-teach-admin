@@ -12,8 +12,9 @@ import { User } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye } from "lucide-react";
 import { UserRowActions } from "./user-row-actions";
+import { UserViewCount } from "./user-view-count";
 
 interface UserTableProps {
     users: User[];
@@ -47,6 +48,10 @@ export function UserTable({ users, loading, onRefresh }: UserTableProps) {
                         <TableHead>Role</TableHead>
                         <TableHead>Joined</TableHead>
                         <TableHead>Status</TableHead>
+                        <TableHead className="flex items-center gap-1">
+                            <Eye className="h-4 w-4" />
+                            Views
+                        </TableHead>
                         <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -97,6 +102,13 @@ export function UserTable({ users, loading, onRefresh }: UserTableProps) {
                                     </Badge>
                                 ) : (
                                     <Badge variant="secondary">Active</Badge>
+                                )}
+                            </TableCell>
+                            <TableCell>
+                                {user.role === "tutor" ? (
+                                    <UserViewCount tutorId={user.uid} />
+                                ) : (
+                                    <span className="text-sm text-muted-foreground">—</span>
                                 )}
                             </TableCell>
                             <TableCell className="text-right">

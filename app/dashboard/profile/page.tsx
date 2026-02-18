@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,13 +11,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { GERMAN_LEVELS, EXAM_TYPES, SPECIALIZATIONS } from "@/lib/types"
-import { Loader2, CheckCircle2, User, Camera } from "lucide-react"
+import { Loader2, CheckCircle2, User, Camera, Eye, Users, Incognito } from "lucide-react"
 import { useAuth } from "@/hooks/use-auth"
+import { profileViewService } from "@/lib/services/profile-view-service"
 
 export default function ProfilePage() {
   const { userProfile, updateUserProfile } = useAuth()
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [viewStats, setViewStats] = useState({
+    totalViews: 0,
+    uniqueViewers: 0,
+    anonymousViews: 0,
+    loading: true,
+  })
 
   const [displayName, setDisplayName] = useState(userProfile?.displayName || "")
   const [bio, setBio] = useState(userProfile?.bio || "")
@@ -27,6 +34,33 @@ export default function ProfilePage() {
   const [specializations, setSpecializations] = useState<string[]>(userProfile?.specializations || [])
 
   const isStudent = userProfile?.role === "student"
+
+  // Fetch view statistics for tutors
+  useEffect(() => {
+    if (!isStudent && userProfile?.uid) {
+      const fetchViewStats = async () => {
+        try {
+          const [totalViews, uniqueViewers, anonymousViews] = await Promise.all([
+            profileViewService.getTutorViewCount(userProfile.uid),
+            profileViewService.getTutorUniqueViewers(userProfile.uid),
+            profileViewService.getTutorAnonymousViews(userProfile.uid),
+          ])
+
+          setViewStats({
+            totalViews,
+            uniqueViewers,
+            anonymousViews,
+            loading: false,
+          })
+        } catch (error) {
+          console.error("Failed to fetch view statistics:", error)
+          setViewStats((prev) => ({ ...prev, loading: false }))
+        }
+      }
+
+      fetchViewStats()
+    }
+  }, [isStudent, userProfile?.uid])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -75,6 +109,58 @@ export default function ProfilePage() {
           <CheckCircle2 className="h-4 w-4 text-accent" />
           <AlertDescription className="text-accent">Profile updated successfully!</AlertDescription>
         </Alert>
+      )}
+
+      {/* Profile Views Statistics (Tutors Only) */}
+      {!isStudent && (
+        <Card className="bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 border-blue-200 dark:border-blue-900">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Eye className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              Profile View Statistics
+            </CardTitle>
+            <CardDescription>Track how many users have viewed your profile</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {viewStats.loading ? (
+              <div className="flex items-center justify-center py-6">
+                <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div className="rounded-lg bg-white dark:bg-slate-900 p-4 border border-blue-100 dark:border-blue-900">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Total Views</p>
+                      <p className="text-2xl font-bold text-foreground">{viewStats.totalViews}</p>
+                    </div>
+                    <Eye className="h-8 w-8 text-blue-500/30" />
+                  </div>
+                </div>
+
+                <div className="rounded-lg bg-white dark:bg-slate-900 p-4 border border-purple-100 dark:border-purple-900">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Unique Viewers</p>
+                      <p className="text-2xl font-bold text-foreground">{viewStats.uniqueViewers}</p>
+                    </div>
+                    <Users className="h-8 w-8 text-purple-500/30" />
+                  </div>
+                </div>
+
+                <div className="rounded-lg bg-white dark:bg-slate-900 p-4 border border-amber-100 dark:border-amber-900">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Anonymous Views</p>
+                      <p className="text-2xl font-bold text-foreground">{viewStats.anonymousViews}</p>
+                    </div>
+                    <Incognito className="h-8 w-8 text-amber-500/30" />
+                  </div>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       )}
 
       {/* Profile Photo */}

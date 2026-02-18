@@ -29,7 +29,7 @@ const studentNavItems = [
 
 const tutorNavItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/bookings", label: "Bookings", icon: Calendar },
+  // { href: "/dashboard/bookings", label: "Bookings", icon: Calendar },
   { href: "/dashboard/messages", label: "Messages", icon: MessageSquare },
   { href: "/dashboard/profile", label: "My Profile", icon: User },
   { href: "/dashboard/availability", label: "Availability", icon: Calendar },

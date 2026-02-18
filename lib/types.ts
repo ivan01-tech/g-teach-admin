@@ -193,3 +193,24 @@ export interface PlatformStats {
   conversionRate: number
   updatedAt: any // Timestamp
 }
+
+export interface ProfileView {
+  id: string
+  tutorId: string
+  viewerId?: string // Optional, if the viewer is logged in
+  viewedAt: any // Timestamp
+  device?: string
+  browser?: string
+}
+
+export interface ContactInquiry {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  reason: string
+  subject: string
+  message: string
+  status: "pending" | "resolved" | "archived"
+  createdAt: any // Timestamp
+}

@@ -174,7 +174,7 @@ export function ChatWindow({
                             <Avatar className="h-8 w-8">
                               <AvatarImage src={message.senderPhoto || "/placeholder.svg"} alt={message.senderName} />
                               <AvatarFallback className="text-xs">
-                                {message.senderName[0]?.toUpperCase()}
+                                {message?.senderName[0]?.toUpperCase()}
                               </AvatarFallback>
                             </Avatar>
                           )}

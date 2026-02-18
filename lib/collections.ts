@@ -11,4 +11,6 @@ export const firebaseCollections = {
   matchings: "matchings",
   engagedUsers: "engagedUsers",
   stats: "stats",
+  profileViews: "profileViews",
+  contactInquiries: "contactInquiries",
 };
