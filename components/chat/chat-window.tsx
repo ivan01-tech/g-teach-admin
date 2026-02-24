@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { cn } from "@/lib/utils"
+import { cn, formatMessageTime } from "@/lib/utils"
 import type { Conversation, Message } from "@/lib/types"
 
 interface ChatWindowProps {
@@ -53,9 +53,7 @@ export function ChatWindow({
     inputRef.current?.focus()
   }
 
-  const formatMessageTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  }
+
 
   const formatDateDivider = (date: Date) => {
     const today = new Date()
@@ -76,7 +74,7 @@ export function ChatWindow({
   let currentDate = ""
 
   messages.forEach((message) => {
-    const messageDate = message.createdAt.toDateString()
+    const messageDate = new Date(message.createdAt).toDateString()
     if (messageDate !== currentDate) {
       currentDate = messageDate
       groupedMessages.push({ date: messageDate, messages: [message] })
