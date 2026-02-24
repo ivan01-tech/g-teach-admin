@@ -214,3 +214,182 @@ export interface ContactInquiry {
   status: "pending" | "resolved" | "archived"
   createdAt: any // Timestamp
 }
+
+
+
+// ===============
+
+
+export interface TutorDocument {
+  id: string
+  type: "certificate" | "diploma" | "cv" | "other"
+  name: string
+  url: string
+  uploadedAt: Date
+  status: VerificationStatus
+}
+
+export interface Tutor {
+  uid: string
+  displayName: string
+  email: string
+  photoURL?: string
+  bio?: string
+  city?: string
+  specializations: string[]
+  teachingLevels: string[]
+  examTypes: string[]
+  languages: string[]
+  hourlyRate: number
+  currency: string
+  availability: AvailabilitySlot[]
+  rating: number
+  reviewCount: number
+  totalStudents: number
+  totalLessons: number
+  verificationStatus: VerificationStatus
+  verificationMessage?: string
+  documents: TutorDocument[]
+  isOnline: boolean
+  createdAt: Date
+  country?: string
+  timezone?: string
+  profileViews?: number
+  // Kept for backwards compatibility
+  isVerified?: boolean
+}
+
+export interface ProfileView {
+  id: string
+  tutorId: string
+  viewerId?: string // Optional, if the viewer is logged in
+  viewedAt: any // Timestamp
+  device?: string
+  browser?: string
+}
+
+export interface City {
+  id: string
+  name: string
+  country?: string
+}
+
+export interface AvailabilitySlot {
+  day: string
+  startTime: string
+  endTime: string
+}
+
+export interface Review {
+  id: string
+  tutorId: string
+  studentId: string
+  studentName: string
+  studentPhoto?: string
+  rating: number
+  comment: string
+  createdAt: Date
+}
+
+export interface Booking {
+  id: string
+  tutorId: string
+  studentId: string
+  tutorName: string
+  studentName: string
+  date: Date
+  startTime: string
+  endTime: string
+  status: "pending" | "confirmed" | "completed" | "cancelled"
+  price: number
+  currency: string
+  notes?: string
+  createdAt: Date
+}
+
+export interface Message {
+  id: string
+  conversationId: string
+  senderId: string
+  senderName: string
+  senderPhoto?: string
+  text: string
+  createdAt: Date
+  read: boolean
+}
+
+export interface Conversation {
+  id: string
+  participants: string[]
+  participantNames: Record<string, string>
+  participantPhotos: Record<string, string>
+  lastMessage?: string
+  lastMessageAt?: Date
+  unreadCount: Record<string, number>
+}
+
+
+
+// export type MatchingStatus = "requested" | "open" | "confirmed" | "refused" | "continued"
+
+export interface Matching {
+  id: string
+  learnerId: string
+  tutorId: string
+  learnerName?: string
+  tutorName?: string
+  contactDate: any // Timestamp
+  status: MatchingStatus
+  // Confirmations mutuelles
+  learnerConfirmed?: boolean
+  learnerConfirmedAt?: any // Timestamp
+  tutorConfirmed?: boolean
+  tutorConfirmedAt?: any // Timestamp
+  // Feedback & Raisons
+  learnerFeedback?: string
+  tutorFeedback?: string
+  // Gestion des rappels
+  reminderSentAt?: any // Timestamp
+  followupAt?: any // Timestamp pour relance courte (e.g. 5 minutes)
+  reminderCount?: number // Nombre de rappels envoyés
+  closedAt?: any // Timestamp
+  // Monétisation
+  isMonetized?: boolean // Est-ce une collaboration payante
+  transactionId?: string // Référence à une transaction
+}
+
+export interface ContactInquiry {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  reason: string
+  subject: string
+  message: string
+  status: "pending" | "resolved" | "archived"
+  createdAt: any // Timestamp
+}
+
+export interface School {
+  id: string
+  name: string
+  logo: string
+  location: {
+    city: string
+    country: string
+  }
+  exams: string[]
+  isVerified: boolean
+  rating: number
+  reviewCount: number
+  levels: string[]
+  description?: string
+}
+
+export interface SchoolFilterState {
+  searchQuery: string
+  country: string
+  city: string
+  examType: string
+  level: string
+}

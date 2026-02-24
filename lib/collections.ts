@@ -10,6 +10,7 @@ export const firebaseCollections = {
   reviews: "reviews",
   matchings: "matchings",
   engagedUsers: "engagedUsers",
+  cities:"cities",
   stats: "stats",
   profileViews: "profileViews",
   contactInquiries: "contactInquiries",

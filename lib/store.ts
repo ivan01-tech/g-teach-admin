@@ -5,8 +5,8 @@ import authReducer from "@/app/auth/auth-slice";
 import userReducer from "@/app/dashboard/users/redux/user-slice";
 import profilesReducer from "@/app/dashboard/profiles/profiles-slices";
 import matchingsReducer from "@/app/dashboard/matchings/redux/matching-slice";
+import citiesReducer from "@/app/dashboard/cities/slice";
 import statsReducer from "@/app/dashboard/stats/redux/stats-slice";
-
 
 // Initialize side effects
 
@@ -17,8 +17,8 @@ export const store = configureStore({
     profiles: profilesReducer,
     matchings: matchingsReducer,
     stats: statsReducer,
+    cities: citiesReducer,
   },
-
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -29,7 +29,7 @@ export const store = configureStore({
           "users/initListener/fulfilled",
           "profiles/listen/fulfilled",
           "stats/initListeners/fulfilled",
-          "matchings/initListener/fulfilled"
+          "matchings/initListener/fulfilled",
         ],
         // Ignore these field paths in all actions
         ignoredActionPaths: [
@@ -84,9 +84,7 @@ export const store = configureStore({
         ],
       },
     }).prepend(listenerMiddleware.middleware),
-})
-
-
+});
 
 setupEmailSideEffects();
 

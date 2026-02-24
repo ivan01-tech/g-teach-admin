@@ -25,7 +25,7 @@ const adminNavItems = [
   { href: "/dashboard/matchings", label: "Matchings", icon: Users },
   { href: "/dashboard/stats", label: "Analytics", icon: BarChart3 },
   { href: "/dashboard/messages", label: "Messages", icon: MessageSquare },
-  { href: "/dashboard/profile", label: "Profile", icon: User },
+  { href: "/dashboard/schools", label: "Schools", icon: User },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
   { href: "/dashboard/contact-inquiries", label: "Contact Inquiries", icon: MessageSquare },
 ];

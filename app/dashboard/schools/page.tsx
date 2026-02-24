@@ -6,6 +6,7 @@ import AdminSidebar from '@/components/admin/admin-sidebar'
 import SchoolList from '@/components/admin/schools/school-list'
 import VerificationPanel from '@/components/admin/schools/verification-panel'
 import StatsPanel from '@/components/admin/schools/stats-panel'
+import AddSchoolForm from '@/components/admin/schools/add-school-form'
 
 const MOCK_SCHOOLS = [
   {
@@ -38,6 +39,7 @@ const MOCK_SCHOOLS = [
 export default function Page() {
   const [schools, setSchools] = React.useState(MOCK_SCHOOLS)
   const [selected, setSelected] = React.useState<any | null>(null)
+  const [showAdd, setShowAdd] = React.useState(false)
   const [filter, setFilter] = React.useState<'all' | 'pending' | 'verified' | 'rejected'>('pending')
 
   const handlePreview = (s: any) => setSelected(s)
@@ -50,6 +52,11 @@ export default function Page() {
   const reject = (id: string) => {
     setSchools((prev) => prev.filter((p: any) => p.id !== id))
     if (selected?.id === id) setSelected(null)
+  }
+
+  const handleCreate = (s: any) => {
+    setSchools((prev) => [s, ...prev])
+    setSelected(s)
   }
 
   const stats = {
@@ -73,7 +80,12 @@ export default function Page() {
         <main className="flex-1 p-6">
           <div className="grid grid-cols-3 gap-6">
             <div className="col-span-2">
-              <h2 className="text-2xl font-semibold">Language Schools — Pending approvals</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-semibold">Language Schools — Pending approvals</h2>
+                <div>
+                  <button className="rounded-md bg-primary px-3 py-1 text-white" onClick={() => setShowAdd(true)}>Ajouter une école</button>
+                </div>
+              </div>
               <div className="mt-4">
                 <SchoolList
                   schools={schools}
@@ -100,6 +112,14 @@ export default function Page() {
           </div>
         </main>
       </div>
+
+      {showAdd && (
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 p-6">
+          <div className="w-full max-w-3xl">
+            <AddSchoolForm onCreate={handleCreate} onClose={() => setShowAdd(false)} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
