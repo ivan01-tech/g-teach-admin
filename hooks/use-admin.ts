@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useAppSelector } from '@/lib/hooks'
 import { UserRole } from '@/lib/roles'
 
@@ -12,20 +12,27 @@ export function useAdminProtection(): {
   loading: boolean
 } {
   const router = useRouter()
+  const params = usePathname()
   const { user, userProfile, loading } = useAppSelector((state) => state.auth)
 
   useEffect(() => {
     // Only check after loading is complete
     if (!loading) {
       // If not authenticated, redirect to login
-      if (!user || !userProfile) {
-        router.push('/auth/admin-login')
+      if (!user) {
+        router.push('/auth/login')
         return
       }
 
       // If not admin, redirect to their respective dashboard
-      if (userProfile.role === UserRole.Admin) {
+      if (user.role === UserRole.Admin) {
+        const currentRoute = params.split('/')[2] 
+        if(currentRoute && currentRoute !== 'dashboard') {
+          router.push('/dashboard/' + currentRoute)
+        }else {
           router.push('/dashboard')
+        }
+
         }else {
           router.push('/auth/not-authorised')
         }

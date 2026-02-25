@@ -14,6 +14,7 @@ import {
   Lock,
   Files,
   Menu,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuthDispatch } from "@/hooks/use-auth-dispatch";
@@ -35,6 +36,11 @@ const adminMenuItems = [
       { label: "Tutors", href: "/admin/users/tutors" },
       { label: "Admins", href: "/admin/users/admins" },
     ],
+  },
+  {
+    icon: Building2,
+    label: "Schools",
+    href: "/admin/schools",
   },
   {
     icon: BookOpen,

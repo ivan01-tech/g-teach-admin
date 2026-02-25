@@ -6,6 +6,7 @@ import {
   sendValidationEmail,
 } from "../services/emails/sendEmails";
 import { validateProfileThunk } from "@/app/dashboard/profiles/profiles-thunks";
+import { UserRole } from "../roles";
 
 let isRegistered = false;
 
@@ -36,7 +37,7 @@ export const setupEmailSideEffects = () => {
           displayName: user.displayName,
           email: user.email,
           password,
-          role: user.role,
+          role: user.role as UserRole,
         });
 
         console.log(`✅ Welcome email sent to ${user.email}`);
@@ -66,7 +67,7 @@ export const setupEmailSideEffects = () => {
           status,
           displayName: tutor.displayName,
           email: tutor.email,
-          role: user.role,
+          role: user.role as UserRole,
           feedbackMessage: message,
         });
 
@@ -77,3 +78,5 @@ export const setupEmailSideEffects = () => {
     },
   });
 };
+
+
