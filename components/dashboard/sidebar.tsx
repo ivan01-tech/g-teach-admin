@@ -26,7 +26,11 @@ const adminNavItems = [
   { href: "/dashboard/schools", label: "Schools", icon: Users },
   { href: "/dashboard/stats", label: "Analytics", icon: BarChart3 },
   { href: "/dashboard/messages", label: "Messages", icon: MessageSquare },
+<<<<<<< HEAD
   // { href: "/dashboard/profile", label: "Profile", icon: User },
+=======
+  { href: "/dashboard/schools", label: "Schools", icon: User },
+>>>>>>> 29ec7958f27857a28b7bdc133569f50e9ff97a04
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
   { href: "/dashboard/contact-inquiries", label: "Contact Inquiries", icon: MessageSquare },
 ];
