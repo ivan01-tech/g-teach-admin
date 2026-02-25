@@ -49,7 +49,7 @@ export function ProfileValidationDialog({ tutor, isOpen, onOpenChange, onConfirm
                 setMessage("");
             }
         }}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-106.25">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         {isConfirmingReject ? (
@@ -75,7 +75,7 @@ export function ProfileValidationDialog({ tutor, isOpen, onOpenChange, onConfirm
                             placeholder={isConfirmingReject ? "Explain why this profile was rejected..." : "Add an optional welcome message or verification note..."}
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
-                            className="min-h-[100px]"
+                            className="min-h-25"
                         />
                     </div>
                 </div>

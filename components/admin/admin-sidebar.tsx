@@ -98,7 +98,7 @@ export default function AdminSidebar({ open = true, onOpenChange }: AdminSidebar
   return (
     <div
       className={cn(
-        "fixed left-0 top-0 h-screen bg-gradient-to-b from-slate-900 to-slate-800 border-r border-slate-700 transition-all duration-300 ease-in-out z-40",
+        "fixed left-0 top-0 h-screen bg-linear-to-b from-slate-900 to-slate-800 border-r border-slate-700 transition-all duration-300 ease-in-out z-40",
         open ? "w-64" : "w-20"
       )}
     >
@@ -106,7 +106,7 @@ export default function AdminSidebar({ open = true, onOpenChange }: AdminSidebar
       <div className="flex items-center justify-between h-16 px-4 border-b border-slate-700">
         {open && (
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-blue-500 to-purple-600">
               <LayoutDashboard className="h-5 w-5 text-white" />
             </div>
             <span className="text-lg font-bold text-white">G-Admin</span>
@@ -138,7 +138,7 @@ export default function AdminSidebar({ open = true, onOpenChange }: AdminSidebar
                     : "text-slate-400 hover:text-slate-200 hover:bg-slate-700/50"
                 )}
               >
-                <Icon className="h-5 w-5 flex-shrink-0" />
+                <Icon className="h-5 w-5 shrink-0" />
                 {open && <span className="text-sm font-medium flex-1">{item.label}</span>}
               </Link>
 
